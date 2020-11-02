@@ -54,6 +54,10 @@ Parameters:
   GitHubRepo:
     Description: GitHub repo name
     Type: String
+  GitHubBranch:
+    Description: GitHub branch name
+    Type: String
+    Default: main
 
 Resources:
   Artifacts:
@@ -87,6 +91,9 @@ Resources:
         Type: GITHUB
       Triggers:
         Webhook: true
+        FilterGroups:
+          - Type: HEAD_REF
+            Pattern: !Sub '^refs/heads/${GitHubBranch}$'
     Type: AWS::CodeBuild::Project
   CodeBuildProjectRole:
     Properties:
